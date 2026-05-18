@@ -1,1 +1,10 @@
+body{
+  background:#111;
+  color:white;
+  font-family:Arial;
+  padding:20px;
+}
 
+h1{
+  text-align:center;
+}
