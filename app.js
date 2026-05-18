@@ -5,8 +5,6 @@ async function cargarPartidos() {
   const respuesta = await fetch(CSV_URL);
   const texto = await respuesta.text();
 
-  console.log(texto);
-
   const filas = texto.trim().split("\n").slice(1);
 
   let html = "";
@@ -15,14 +13,26 @@ async function cargarPartidos() {
 
     const columnas = fila.split(",");
 
+    // Evita filas vacías
+    if(columnas.length < 4) return;
+
+    const fecha = columnas[1]?.trim();
+    const hora = columnas[2]?.trim();
+    const rival = columnas[3]?.trim();
+    const estadio = columnas[5]?.trim();
+    const estado = columnas[6]?.trim();
+
+    // Evita encabezados
+    if(rival === "Rival") return;
+
     html += `
       <div class="partido">
-        <h2>Cultural Maipú vs ${columnas[3]}</h2>
+        <h2>Cultural Maipú vs ${rival}</h2>
 
-        <p>📅 ${columnas[1]}</p>
-        <p>⏰ ${columnas[2]}</p>
-        <p>🏟️ ${columnas[5]}</p>
-        <p>📌 ${columnas[6]}</p>
+        <p>📅 ${fecha}</p>
+        <p>⏰ ${hora}</p>
+        <p>🏟️ ${estadio}</p>
+        <p>📌 ${estado}</p>
       </div>
     `;
   });
@@ -30,4 +40,5 @@ async function cargarPartidos() {
   document.getElementById("fixture").innerHTML = html;
 }
 
+cargarPartidos();
 cargarPartidos();
